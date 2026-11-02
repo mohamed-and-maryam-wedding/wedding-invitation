@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation | Mohamed & Maryam</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #c59b27;
+            --bright-gold: #e2b736;
+            --dark-gold: #8a6405;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #f4eae1 100%);
+            --text-color: #2c2c2c;
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 10px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Continuous Petal Overlay Across Viewport */
+        #petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffd1dc, #ffb7c5);
+            border-radius: 15px 0 15px 0;
+            opacity: 0.8;
+            pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+            will-change: transform, top;
+        }
+
+        @keyframes fall {
+            0% { top: -20px; }
+            100% { top: 105vh; }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(50px) rotate(360deg); }
+        }
+
+        /* Outer Envelope Screen */
+        .envelope-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(244, 234, 225, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            z-index: 20;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+        }
+
+        .envelope-wrapper.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .external-letter {
+            width: 100%;
+            max-width: 480px;
+            min-height: 380px;
+            background: linear-gradient(145deg, #ffffff 0%, #f7efe5 100%);
+            border: 2px solid var(--primary-gold);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(138, 100, 5, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 20px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .external-letter:active, .external-letter:hover {
+            transform: scale(0.98);
+        }
+
+        .letter-header-seal {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            color: var(--dark-gold);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .letter-center-content {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .letter-names {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(2.4rem, 8vw, 3.2rem);
+            color: var(--dark-gold);
+            line-height: 1.2;
+        }
+
+        .letter-sub {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #777;
+            margin-top: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Wax Seal Button */
+        .seal-button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .wax-seal-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #d4af37 0%, #8a6405 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(138, 100, 5, 0.4);
+            border: 2px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .open-action-text {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--dark-gold);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* Main Invitation Card Container */
+        .card-container {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            padding: 12px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.96);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            margin: auto;
+        }
+
+        .card-container.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .card-inner-frame {
+            border: 2px solid var(--primary-gold);
+            border-radius: 16px;
+            padding: 25px 15px;
+            position: relative;
+            background: #fdfbf7;
+            text-align: center;
+        }
+
+        .card-inner-frame::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px dashed var(--primary-gold);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .tagline {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 3px;
+            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .groom-name, .bride-name {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(2.8rem, 10vw, 4rem);
+            color: var(--dark-gold);
+            line-height: 1.1;
+        }
+
+        .ampersand {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            margin: 6px 0;
+            display: block;
+            font-weight: 700;
+        }
+
+        .invitation-text {
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin: 15px 0;
+            letter-spacing: 0.3px;
+            padding: 0 5px;
+        }
+
+        /* Mobile Date Badge */
+        .date-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #8a6405 100%);
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            font-weight: 900;
+            letter-spacing: 3px;
+            padding: 10px 24px;
+            border-radius: 40px;
+            margin: 10px 0 20px;
+            box-shadow: 0 6px 18px rgba(138, 100, 5, 0.2);
+            width: 90%;
+            max-width: 320px;
+        }
+
+        .countdown-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.75rem, 2.8vw, 0.85rem);
+            color: var(--dark-gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        /* Countdown Grid for Mobile */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .time-box {
+            background: rgba(244, 232, 193, 0.45);
+            border: 1px solid rgba(197, 155, 39, 0.35);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .time-box .num {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
+            font-weight: 700;
+            color: var(--dark-gold);
+        }
+
+        .time-box .label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .venue-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 18px 12px;
+            margin: 15px 0;
+            border: 1px solid rgba(197, 155, 39, 0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .resort-name {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .hall-name {
+            font-size: clamp(0.9rem, 3.2vw, 1rem);
+            color: var(--dark-gold);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .time-text {
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            color: #555;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .btn-location {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #d4af37, #aa7c11);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 6px 16px rgba(170, 124, 17, 0.3);
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .closing-message {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            font-style: italic;
+            color: #555;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            line-height: 1.6;
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            body { padding: 30px 15px; }
+            .card-container { padding: 25px; }
+            .card-inner-frame { padding: 40px 30px; }
+            .countdown { gap: 15px; }
+            .time-box { padding: 12px 10px; }
+            .btn-location { width: auto; padding: 14px 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Falling Petals Layer -->
+    <div id="petal-container"></div>
+
+    <!-- Outer Envelope Screen -->
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="external-letter" onclick="openInvitation()">
+            <div class="letter-header-seal">Royal Invitation</div>
+            
+            <div class="letter-center-content">
+                <div class="letter-names">Mohamed & Maryam</div>
+                <div class="letter-sub">12 . 12 . 2026</div>
+            </div>
+
+            <div class="seal-button-container">
+                <div class="wax-seal-button">M&M</div>
+                <div class="open-action-text">Tap To Unseal Letter</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Invitation Card -->
+    <div class="card-container" id="cardContainer">
+        <div class="card-inner-frame">
+            <p class="tagline">Together With Their Families</p>
+
+            <div class="names-wrapper">
+                <div class="groom-name">Mohamed Saad Baidak</div>
+                <span class="ampersand">- & -</span>
+                <div class="bride-name">Maryam Mohamed Refaat</div>
+            </div>
+
+            <p class="invitation-text">
+                request the pleasure of your company to celebrate their wedding ceremony
+            </p>
+
+            <!-- Date Banner -->
+            <div class="date-badge">
+                12 . 12 . 2026
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="countdown-title">Counting Down To The Big Day</div>
+            <div class="countdown">
+                <div class="time-box">
+                    <div class="num" id="days">00</div>
+                    <div class="label">Days</div>
+                </div>
+                <div class="time-box">
+                    <div class="num" id="hours">00</div>
+                    <div class="label">Hours</div>
+                </div>
+                <div class="time-box">
+                    <div class="num" id="mins">00</div>
+                    <div class="label">Mins</div>
+                </div>
+                <div class="time-box">
+                    <div class="num" id="secs">00</div>
+                    <div class="label">Secs</div>
+                </div>
+            </div>
+
+            <!-- Venue Details -->
+            <div class="venue-card">
+                <div class="resort-name">Ain Al Hayat Resort</div>
+                <div class="hall-name">Diamond Hall (قاعة دايموند)</div>
+                <div class="time-text">🕗 Time: 7:00 PM</div>
+                <a href="https://maps.app.goo.gl/vfNWJywKyekPCPhu6?g_st=iw" target="_blank" class="btn-location">
+                    <span>📍</span> View Location on Map
+                </a>
+            </div>
+
+            <!-- Closing Message -->
+            <div class="closing-message">
+                "Your presence and warm prayers will illuminate our day and make this celebration truly complete."
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth Raining Petals Engine
+        const petalContainer = document.getElementById('petal-container');
+        for (let i = 0; i < 30; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const width = Math.random() * 8 + 8;
+            petal.style.width = `${width}px`;
+            petal.style.height = `${width * 1.5}px`;
+            petal.style.left = `${Math.random() * 100}vw`;
+            const duration = Math.random() * 6 + 6;
+            const delay = -Math.random() * duration; // Pre-stagger animation across screen height
+            petal.style.animationDuration = `${duration}s, ${duration / 2}s`;
+            petal.style.animationDelay = `${delay}s, ${delay}s`;
+            petalContainer.appendChild(petal);
+        }
+
+        // Unseal Letter Action
+        function openInvitation() {
+            document.getElementById('envelopeWrapper').classList.add('fade-out');
+            document.getElementById('cardContainer').classList.add('open');
+        }
+
+        // Live Countdown Timer
+        const weddingDate = new Date("December 12, 2026 19:00:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = weddingDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('mins').innerText = mins < 10 ? '0' + mins : mins;
+                document.getElementById('secs').innerText = secs < 10 ? '0' + secs : secs;
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
